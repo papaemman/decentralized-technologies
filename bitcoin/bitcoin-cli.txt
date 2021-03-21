@@ -1,0 +1,186 @@
+DOCUMENTATION: 
+https://bitcoin.org/en/developer-reference#bitcoin-core-apis
+
+------------------------------------------------------------------------------
+
+// SOLUTIONS //
+
+--> First start a bitcoin node in regtest and open another cmd to interact with it.
+
+1. List all available commands
+bitcoin-cli help
+
+2. Search for specific command
+bitcoin-cli help |findstr listaddre
+
+3. Get help on specific command
+bitcoin-cli help getblockchaininfo
+
+4. Get blockchain info
+bitcoin-cli getblockchaininfo
+
+5. Get mining info
+bitcoin-cli getmininginfo
+
+6. Get network info
+bitcoin-cli getnetworkinfo
+
+7. Get network totals
+bitcoin-cli getnettotals
+
+8. Get wallet info
+bitcoin-cli getwalletinfo
+
+9. Create a new address
+bitcoin-cli getnewaddress "papaemman_address"
+2MydtJTiqeRSqVoX7NRsQPsKuJ3BpyiBLCF
+
+- What letter does it start with? Why? 
+- Why doesn't it start with "1"? 
+
+bitcoin-cli getaddressinfo "2MydtJTiqeRSqVoX7NRsQPsKuJ3BpyiBLCF"
+
+
+10. List the addresses you have in your wallet
+bitcoin-cli listaddressgroupings
+
+11. What is the private key of the address you created? 
+bitcoin-cli dumpprivkey "2MydtJTiqeRSqVoX7NRsQPsKuJ3BpyiBLCF"
+
+12. Verify that your address is valid
+bitcoin-cli validateaddress "2MydtJTiqeRSqVoX7NRsQPsKuJ3BpyiBLCF"
+
+13. Change a random letter from the address. Try validating it again.
+bitcoin-cli validateaddress "2MydtJTiqeRSqVoX7NRsQPsKuJ3BpyiBLCE"
+
+14. What is the balance of your account? 
+bitcoin-cli getbalance
+
+15. How many blocks are in the blochain now?
+bitcoin-cli getblockcount
+
+16. What is the hash of the latest block?
+bitcoin-cli getblockhash 0
+0f9188f13cb7b2c71f2a335e3a4fc328bf5beb436012afca590b1a11466e2206
+
+- What block is that? Genesis block
+bitcoin-cli getblock "0f9188f13cb7b2c71f2a335e3a4fc328bf5beb436012afca590b1a11466e2206"
+
+- Why does it have a hash?
+To be passed in the calculations for the next block
+
+17. Generate a block
+bitcoin-cli generatetoaddress 1 "2MydtJTiqeRSqVoX7NRsQPsKuJ3BpyiBLCF"
+[
+  "7850beb04f8a9050ae2c39549a2994e0118499091cd25280ffba24798d39f54f"
+]
+
+18. What is the hash of the current block?
+bitcoin-cli getblockhash 1
+7850beb04f8a9050ae2c39549a2994e0118499091cd25280ffba24798d39f54f
+
+19. Show details about the current block
+bitcoin-cli getblock 7850beb04f8a9050ae2c39549a2994e0118499091cd25280ffba24798d39f54f
+
+- What is the previous block's hash?
+- What is the merklroot value?
+- How many transactions are included in this block?
+- Can you find the transactions included in this block?
+
+20. Show details about the first transaction in the block (coinbase transaction)
+bitcoin-cli gettransaction "9f579b34e64f89dc4b6965113caf25270ff21cf20f57801db7fe351233c0ff25"
+
+- Why is the transaction labeled as "immature".
+Αυτά τα bitcoin προέκυψαν καθώς εγώ ήμουν ο miner, που έκανα mine το block.
+Αλλά για να μπορέσω να ξοδέψω αυτά τα bitcoins πρέπει να περάσουν 100 blocks.
+
+21. What is your account balance now?
+bitcoin-cli getbalance
+0.00000000
+
+22. Mine 100 more blocks 
+bitcoin-cli generatetoaddress 100 "2MydtJTiqeRSqVoX7NRsQPsKuJ3BpyiBLCF"
+bitcoin-cli getblockcount
+101
+
+
+23. What is your account balance now?
+bitcoin-cli getbalance
+50.00000000
+
+The mining prize from the first block just become available for me to spend it
+(this happens after 100 blocks)
+
+24. Show your UTXOs (Unspend Transactions Outputs),
+    ie what transactions have send to my address bitcoins? 
+(There is just one transaction, the coinbase transaction releates to the mining of the first block)
+bitcoin-cli listunspent
+
+25. Mine another block
+bitcoin-cli generatetoaddress 1 "2MydtJTiqeRSqVoX7NRsQPsKuJ3BpyiBLCF"
+
+26. Show your UTXOs again
+bitcoin-cli listunspent
+
+Now there are 2 UTXOs for my address, one from the mining of the second block (101 confirmations) and one from the mining of the first block (101 confirmations).
+Most recent UTXO appears on TOP.
+
+
+27. List the addresses you have in your wallet
+bitcoin-cli listaddressgroupings
+
+28. Send 1 BTC to your address
+bitcoin-cli sendtoaddress "2MydtJTiqeRSqVoX7NRsQPsKuJ3BpyiBLCF" 1
+3c2cb8fb877aaf1a039ad998e465d676239f7201c24c5c36996e83795a72690e
+
+Σημείωση:
+Είχα μία διεύθυνση (address) με 100 bitcoins.
+Έστειλα 1 bitcoin σ' αυτή την διεύθυνση και τώρα έχω 2 διευθύνσεις,
+εκ των οποίων η μία έχει 51 btc και η άλλη 48.99996680 btc.
+Αυτό που συναίβει είναι ότι όταν προσπάθησα να στείλω ένα bitcoin στην διεύθυνσή μου,
+το πορτοφόλι (wallet) αυτόματα δημιούργησε 1 επιπλέον διεύθυνση και έστειλε εκεί τα μισά  btc που είχα (50). Έπειτα από αυτήν την καινούρια διεύθυνση, έστειλε 1 bτc στην αρχική μου διεύθυνση, αφαιρώντας ταυτόχρονα τα mining fees (0.0000332)
+
+
+29. Can you find the transaction in the mempool?
+bitcoin-cli getmempoolentry "3c2cb8fb877aaf1a039ad998e465d676239f7201c24c5c36996e83795a72690e"
+
+30. List the transaction in the mempool
+bitcoin-cli getmempoolinfo
+bitcoin-cli getrawmempool
+
+[
+  "3c2cb8fb877aaf1a039ad998e465d676239f7201c24c5c36996e83795a72690e"
+]
+
+
+31. How do you confirm the transaction?
+bitcoin-cli generatetoaddress 1 "2MydtJTiqeRSqVoX7NRsQPsKuJ3BpyiBLCF"
+bitcoin-cli getrawmempool
+empty
+
+
+32. Secure your wallet, creating a backup of it 
+bitcoin-cli backupwallet "C:\Users\Panagiotis\Desktop\backup.dat"
+
+33. How do you import it again?
+bitcoin-cli importwallet "C:\Users\Panagiotis\Desktop\backup.dat"
+
+34. How do you password protect your wallet?
+bitcoin-cli encryptwallet "i am the best boy in town"
+wallet encrypted; The keypool has been flushed and a new HD seed was generated (if you are using HD). You need to make a new backup.
+
+Encrypts the wallet with 'passphrase'. This is for first time encryption.
+After this, any calls that interact with private keys such as sending or 
+signing will require the passphrase to be set prior the making these calls.
+Use the walletpassphrase call for this, and then walletlock call.
+If the wallet is already encrypted, use the walletpassphrasechange call.
+Note that this will shutdown the server.
+
+Now set the passphrase to use the wallet, such as for signing or sending bitcoin
+> bitcoin-cli walletpassphrase "i am the best boy in town"
+
+Now we can do something like sign
+> bitcoin-cli signmessage "address" "test message"
+
+Now lock the wallet again by removing the passphrase
+> bitcoin-cli walletlock
