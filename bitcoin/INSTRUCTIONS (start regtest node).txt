@@ -1,0 +1,66 @@
+===================================
+INSTRUCTIONS: Install Bitcoin Core
+===================================
+
+
+// HOW TO: Interact with bitcoint network //
+
+- Bitcoin GUI (graphical user interface)
+- Bitcoin cli (command line interface)
+
+---------------------------------------------------
+
+// HOW TO: Install bitcoin //
+
+1. Install the package
+
+- Download bitcoin core setup .exe file from https://bitcoin.org/en/download
+- Run bitcoin-0.19.0.1-win64-setup.exe file and install bitcoin
+
+
+2. Create configuration file
+
+- Create a file bitcoin.conf inside C:\Users\Panagiotis\AppData\Roaming\Bitcoin path
+- Edit it to enable regtest and expose JSON-RPC
+
+Copy paste inside bitcoin.conf file the following:
+regtest=1
+server=1
+rpcuser=panagiotis
+rpcpassword=papas1996
+
+Note: Don't run Bitcoin core or Bitcoin core (test-net) programms,
+because these programms will download the entire blockchain history of the main-net / test-net respectively.
+(I want to experiment with resnet, instead.)
+
+--------------------------------------------------
+
+// How to run a bitcoin node (resnet) //
+
+--> How to start bitcoin server: Run the bitcoin daemon
+
+1. Open a cmd and run the commands:
+
+- cd C:\Program Files\Bitcoin\daemon (to navigate to the folder)
+
+- bitcoind                           (to run the daemon server)
+
+Note: The above commands starts a bitcoin node in regtest
+      (because of the parameters in the bitcoin.conf file)
+      Keep in mind that cmd must be up and running in order to interact wtih bictoin network.
+
+If you see "Adding fixed seed nodes as DNS doesn't seem to be available.", then 
+- open another cmd at the same directory and start playing using bitcoin-cli commands.
+
+Note: The new cmd must be in the same directory with the bitcoind programm,
+      to be able to interact with it.
+
+---------------------------------------------------------
+ 
+// How do I reset bitcoin regtest mode //
+
+- Delete the Bitcoin Core datadir, at C:\Users\Panagiotis\AppData\Roaming\Bitcoin\regtest
+
+
+
+
