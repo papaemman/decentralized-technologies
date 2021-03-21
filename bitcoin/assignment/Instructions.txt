@@ -1,0 +1,44 @@
+====================
+script_1.py
+====================
+
+// Task //
+Define a public key (or private key) and a locktime
+and create a P2SH address.
+
+RUN:
+$ python script_1.py
+and follow the orders, to get the P2SH address.
+
+
+====================
+script_2.py
+====================
+
+// TASK //
+Allow someone to spend all funds from P2SH address defined in script_1.
+
+
+Notes:
+
+Before starting the script 2,
+
+1. make sure that you have sent some BTC to P2SH address,
+otherwise, you will get an error message that this address has no funds available.
+
+2. make sure that there is a local bitcoin node running,
+
+3. make sure that the transactions sending funds to the P2SH address have been mined (at least 1 confirmation).
+   Otherwise, the script will not be able to find these transactions.
+   You can change this, from the first argument in line 129.
+
+4.  make sure that the locktime specified for this P2SH has passed,
+    or you will get an error.
+
+At the end of the script, if everything goes right, you will get the txid,
+for the required transaction.
+
+RUN:
+$ python script_2.py
+and follow the orders, to spend all the funds from this P2SH address to another address.
+
