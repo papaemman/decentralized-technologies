@@ -1,0 +1,23 @@
+====================================
+Install node.js / truffle / ganache
+=====================================
+
+1) Go to https://nodejs.org/en/ and download and install Node.js
+2) npm install -g truffle (global install)
+3) npm install -g ganache-cli (globabl install)
+4) open a windows powershell as admin
+5) Type: Set-ExecutionPolicy RemoteSigned ---> Enter
+6) Type: ganache-cli -p 8545
+7) Open a new windows powershell as admin
+8) Type: truffle init (only 1 time. If typed again, it will ask to replace existing files.)
+9) Type: notepad truffle-config.js
+10) Uncomment development enviroment and save file
+11) Type: truffle console
+12) Good and ready to play
+
+
+In order to work from console (and not from powershell)
+Create a new configuration file (the same as the file in the system 32 folder) and save it in the 
+https://www.youtube.com/watch?reload=9&v=JZqOvo3P-eI
+
+npm: node package manager

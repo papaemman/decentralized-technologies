@@ -1,0 +1,367 @@
+// Installations //
+
+1. node.js
+  - npm install truffle
+  - npm install ganache
+  - npm install solc-js (όχι αυτόν τον compiler γιατί έχει περιορισμένες δυνατότητες)
+
+
+2. solc (solidity compiler)
+https://github.com/ethereum/solidity/releases
+(Install .zip file for windows)
+
+Σημείωση: To solc είναι compiler γραμμένος σε c++, ενώ το solc-js είναι o ίδιος compiler αλλά γραμμένος
+σε javascript. Προτιμώ τον solc αντί για τον solc-js γιατί έχει περισσότερες δυνατότητες.
+
+
+--------------------------------------------------------
+
+// HELP //
+
+- ganache cli: Δημιουργεί ένα προσωπικό testing δίκτυο για το ethereum.
+               Μας δίνει ένα δίκτυο με το οποίο μπορούμε να επικοινωνούμε μέσω μιας port (default 8545) 
+               τοπικά.
+
+- truffle cli: Πλήρης σουίτα εφαρμογών. Εμείς θα χρησιμοποιήσουμε μόνο το cli.
+
+- solc (solidity compiler)
+
+-----------------------------------------------------------
+
+// LAB (only commands) //
+
+(cmd 1: This is the network, leave it open!)
+$ ganache-cli     
+
+(New cmd 2)
+$ truffle console 
+$ web3.eth.getAccounts()
+$ web3.eth.getBlock()
+$ web3.eth.getAccounts().then(a => myAccount = a[0]) 
+
+$ contractABI = (copy-paste)
+$ myContract = new web3.eth.Contract(contractABI)
+
+$ contractBIN = (copy-paste)
+$ web3.eth.estimateGas({data: contractBIN}) 
+
+$ web3.eth.getGasPrice()
+
+$ web3.eth.getBalance(myAccount)
+
+(Go to contract directory and open new cmd 3)
+
+$ solc --bin Faucet.sol      (binary code)
+$ solc --asm Faucet.sol      (asembly code)
+$ solc --abi Faucet.sol      (application binary interface)
+$ solc --gas Faucet.sol      (get an estimation for gas required for the deployment of this smart contract)
+
+Copy paste abi
+
+ 
+// LAB (commands and notes) //
+
+1. Open terminal and run
+
+$ ganache-cli 
+
+	(default port -p 8545)
+
+	Ganache CLI v6.9.1 (ganache-core: 2.10.2)
+
+	Available Accounts
+	==================
+	(0) 0x882678BE057ed75256b0fE94754Ff8491d680555 (100 ETH)
+	(1) 0xEa176AFa84f0151d346CA80d3c6CD8EFE41c584f (100 ETH)
+	(2) 0xc5ad587Cd8C78A85761F15321f4e63a2AeEa726e (100 ETH)
+	(3) 0xB9342E72A752B6FA63F331cd029Adf88214EC86E (100 ETH)
+	(4) 0x8b3D3b4541fb545D2D6A755FA7B27740878b6a8A (100 ETH)
+	(5) 0xAd70f749714dB2F7Dd06b08E7D7f42baAE40DF2B (100 ETH)
+	(6) 0xBEb01b5Cf571A7Bd4e2a206Ec66C08e65D75403a (100 ETH)
+	(7) 0xd28F7a1cC354d7378a010e24202b02df77c8F4fb (100 ETH)
+	(8) 0xB415e737fE9E9e57A72821cE2E62b696382b8C15 (100 ETH)
+	(9) 0xd29B579cB36a73ac4F2827d15dF092D7984010f5 (100 ETH)
+	
+	Private Keys
+	==================
+	(0) 0x5f5eaf77321277d2c2b9d86af200f5c3a433ce070528768118228e337b3c65da
+	(1) 0x939d8ae0e5eaa83fc42e389f29a388ecf586c714bf085b2827de577b9d4673ea
+	(2) 0x248512eed9db3d4af81efbe2486f90100d71ec783546e4bcd67c9b0bf802d4fb
+	(3) 0xdd6547857f7f2b8192f9dcafde47e7fe7bc7e643b32890b370a362d9a8450da4
+	(4) 0x54c7885ac7d1aa13c87dba08d5aad602b381380134e93d58df5a2f74b84fca5f
+	(5) 0x56b7b59c94d64dd286f911a1eaf862c15da202cc4a1398b3944fb8717171154c
+	(6) 0x0971d6d8442a0dc9cdfad2e2e13fd463dc044064b53b499642eec48c8c67c868
+	(7) 0x44fbc7c64868fbdceb2ae04430bb50d955631341b3a68b497d530a56de7bf674
+	(8) 0xceab881a755defde1c7420ec27d18edd6293829348d6b49bfd25db4faace8693
+	(9) 0xc157a94ed19eee1e5efc56111c8498a81962d32e6e3e3614b17ac82f65022cc8
+
+	HD Wallet
+	==================
+	Mnemonic:      limit skirt minimum view arrive project never gadget sort biology text rifle
+	Base HD Path:  m/44'/60'/0'/0/{account_index}
+
+	Gas Price
+	==================
+	20000000000
+
+	Gas Limit
+	==================
+	6721975
+
+	Call Gas Limit
+	==================
+	9007199254740991
+
+	Listening on 127.0.0.1:8545
+
+
+2. Αφήνω το δίκτυο να τρέχει και ανοίγω μια νέα console στον φάκελο του project.
+
+(Έχω κάνει uncomment το development network, από το config file του truffle)
+
+Τρέχω
+$ truffle console
+
+- Με αυτό τον τρόπο έχω συνδεθεί στο δίκτυο του ganache (που τρέχει στην άλλη console)
+- Μόλις συνδεθεί το truffle console μπορώ να δω στο console που τρέχει το ganache διάφορα μηνύματα,
+  σχετικά με τις εντολές που τρέχω στο truffle console.
+
+
+3. Commands (inide truffle console)
+
+We will use web3.js library (it's already installed) 
+
+web3.utils.*
+web3.eth.*
+
+
+web3.eth.getAccounts()
+web3.eth.getBalance()
+web3.eth.getBlock()
+web3.eth.getBlockNumber()
+web3.eth.getBlockTransactionCount()
+web3.eth.getBlockUncleCount()
+web3.eth.getCode() 
+web3.eth.getCoinbase()
+web3.eth.getGasPrice()     
+web3.eth.getHashrate()  
+web3.eth.getNodeInfo()  
+web3.eth.getPastLogs()
+web3.eth.getProtocolVersion()   
+web3.eth.getStorageAt()       
+web3.eth.getTransaction()   
+web3.eth.getTransactionCount()
+web3.eth.getTransactionFromBlock()
+web3.eth.getTransactionReceipt()
+web3.eth.getUncle()              
+web3.eth.getWork()
+
+
+
+4. Main Lab
+
+- get a contract                : Faucet.sol, solidity script
+- compile it using solc         : Use solidity compiler (use sol.exe programm)
+- load it to the local network  :
+- run the contract              :
+
+
+Open terminal at the directory where the Faucet.sol and sol.exe are saved
+and run: 
+
+$ solc --bin Faucet.sol      (binary code)
+$ solc --asm Faucet.sol      (asembly code)
+$ solc --abi Faucet.sol      (application binary interface)
+$ solc --gas Faucet.sol      (get an estiamtion for gas required for the deployment of this smart contract)
+
+Note: This binary code will be runned in the Ethereum virtual machine.
+
+
+-> Keep the first address:
+
+$ web3.eth.getAccounts().then(a => myAccount = a[0])    Promise resolved!
+$ myAccount = web3.eth.getAccounts()[0]                 No! Δεν έχει επιστρέψει ακόμα τιμή το promise
+
+
+-> Get the binary code from Faucet.sol contract and save it in a variable.
+   Do the same with tha abi code too.
+
+(cmd 3) $ solc --bin Faucet.sol
+
+(cmd 2) $ contractBIN = '608060405234801561001057600080fd5b5061012e806100206000396000f3fe60806040526004361060295760003560e01c806312065fe01460345780632e1a7d4d14605c57602f565b36602f57005b600080fd5b348015603f57600080fd5b5060466093565b6040518082815260200191505060405180910390f35b348015606757600080fd5b50609160048036036020811015607c57600080fd5b8101908080359060200190929190505050609b565b005b600047905090565b67016345785d8a000081111560af57600080fd5b3373ffffffffffffffffffffffffffffffffffffffff166108fc829081150290604051600060405180830381858888f1935050505015801560f4573d6000803e3d6000fd5b505056fea2646970667358221220fd1b08326d55ecd0c6b7236cd8b0363e43aad6c2308fb4b9a7d9a127ecd459b764736f6c63430006080033'
+
+
+(cmd 3) $ solc --abi Faucet.sol
+
+(cmd 2) $ contractABI = [{"inputs":[],"name":"getBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"withdraw_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"stateMutability":"payable","type":"receive"}]
+
+
+Φτιάχνω ένα αντικείμενο της κλάσης Contract, το οποίο θέλει σαν όρισμα το ABI του contract.
+
+(cmd 2) $ FaucetContract = new web3.eth.Contract(contractABI)
+
+
+Gas Estimation 
+Το κόστος που θα έχω για να κάνω deploy το smart contract στο δίκτυο.
+Μόνο για να το ανεβάσω και όχι για να το τρέξω (το ανεβάζει και τρέχει τον constructor)
+
+$ web3.eth.estimateGas({data: contractBIN}) 
+
+Πόσο κοστίζει το gas, στο δίκτυο του ganache?
+
+$ web3.eth.getGasPrice()
+'20000000000'
+
+$ web3.utils.fromWei('20000000000')	
+
+Η πολυπλοκότητα του κώδικα (μέγεθος του bytecode) ρυθμίζει και το κόστος 
+του deployment.
+
+Προσοχή: Διαφορετικό το κόστος του deployment
+και το κόστος της εκτέλεσης του contract.
+
+Μόλις γίνει deploy το contract στο δίκτυο, δεν θα το τρέξουν οι κόμβοι.
+Αν δεν πω εγώ σε κάποιον την διευθυνση (address) και το ΑΒΙ δεν μπορεί να το τρέξει κανένας.
+
+
+-> Πώς κάνω deploy?
+
+Παίρνω το contract και θέλω να το κάνω deploy.
+(Αυτό που κάνω deploy είναι μόνο τα data του)
+Ανεβάζω τον binary code στο blockchain. 
+Για να το ανεβάσω όμως πρέπει να ξοδέξω όμως κάποια ethers (σαν fees)
+και γι΄αυτό βάζω το account μου για να πάρει από εκεί τα ethers.
+
+
+$ FaucetContract.deploy({data: contractBIN}).send({from: myAccount, gas: 120000, gasPrice: '20000000000'}).then( (instance) => {console.log(instance.options.address)})
+
+0x95B40392BdcbD238Ef83B18c28A91bB7e791b641
+
+Προσοχή: Κάθε deployment κοστίζει ethers, γι αυτό πρέπει να κρατήσω
+την διεύθυνση του contract. Αλλιώς θα πρέπει να ξανακάνω deploy και να ξανακάνει deploy
+αυτό το constract σε μια καινούρια διεύθυνση.
+
+$ contractAddress = "0x95B40392BdcbD238Ef83B18c28A91bB7e791b641"
+
+-> Πόσα χρήματα ξόδεψα?
+$ web3.eth.getBalance(myAccount)
+
+To contract έχει ανεβεί στο blockchain.
+Εξετάζω πόσα blocks έχουν γίνει mine στο δίκτυο του ethereum.
+$ web3.eth.getBlockNumber()
+
+Note: Στο test network του ethereum δεν χρειάζεται να κάνω mine τα transactions
+(όπως έκανα στο regtest network του bitcoin με την generatetoaddress)
+Εδώ η default συμπεριφορά είναι να γίνεται mine μετά από κάθε transaction.
+’ρα κάθε block έχει ακριβώς ένα transaction.
+$ web3.eth.getBlock(1)
+
+
+Η δουλειά του Faucet contract είναι να στέλνει χρήματα σε όποιον του ζητάει.
+Αυτή τη στιγμή το contract δεν έχει χρήματα.
+(Γενικά ένα contract έχει ή δεν έχει ethers, στο δίκτυο του ethereum)
+
+$ web3.eth.getBalance(contractAddress)
+
+
+Θα στείλω 20 ethers σ΄αυτό το contract.
+
+$ amountToSend = web3.utils.toWei("20", "ether")
+
+
+Φτιάχνω το transaction και στέλνω τα ethers από το myAccount στο contract
+
+$ sendTX = web3.eth.sendTransaction({from: myAccount, to:contractAddress, value: amountToSend})
+
+
+Πόσο μειώθηκε το υπόλοιπό μου?
+$ web3.eth.getBalance(myAccount)
+
+Πόσο είναι το balance του contractAddress?
+$ web3.eth.getBalance(contractAddress)
+'20000000000000000000'
+$ web3.utils.fromWei('20000000000000000000')
+'20'
+
+
+-> Επομένως, ο κώδικας βρίσκεται τώρα online.
+
+Αν δώσω σε κάποιον την διέυθυνση του contract και το ΑΒΙ,
+τότε αυτός θα μπορεί να χρησιμοποιήσει τις μεθόδους που βρίσκονται μέσα στο contract.
+
+
+-> Έστω ότι είμαι κάποιος άλλος τώρα και κάποιος μου έχει δώσει την διεύθυνση του contract 
+ και το ΑΒΙ.
+
+
+(Βγαίνω από το truffle με ctrl+c x2 και ξαναμπαίνω με truffle console)
+
+$ contractAddress = '0x95B40392BdcbD238Ef83B18c28A91bB7e791b641'
+
+$ contractABI =
+[{"inputs":[],"name":"getBalance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"withdraw_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},{"stateMutability":"payable","type":"receive"}]
+
+
+Βλέπω τα 10 διαθέσιμα accounts μου και επιλέγω πχ 2
+
+$ web3.eth.getAccounts()
+
+$ myAccount = '0x882678BE057ed75256b0fE94754Ff8491d680555'
+
+$ myAccount2 = '0xEa176AFa84f0151d346CA80d3c6CD8EFE41c584f'
+
+
+Πρέπει να δηλώσω ότι θέλω να χρησιμοποιήσω αυτό το contract,
+για το οποίο ξέρω το address και το ABI του.
+Επομένως ορίζω ένα καινούριο instance αυτής της κλάσης, χρησιμοποιώντας αυτή τη φορά και 
+το contractABI και το contractAddress.
+
+$ FaucetContract = new web3.eth.Contract(contractABI, contractAddress)
+
+Μπορώ να δω τις μεθόδους που υλοποιούνται στο contract
+$ FaucetContract.methods. (TAB)
+
+Για να χρησιμοποιήσω τις μεθόδους του contract:
+
+$ FaucetContract.methods.getBalance().call()
+
+Note: Για να μεταβάλω κάτι στο blockchain χρειάζεται να τρέξω ένα transaction,
+ενώ για να διαβάσω απλά κάτι από το blockchain δεν χρειάζομαι transaction .call()
+
+Έστω ότι θέλω να κάνω withdraw, ένα amount.
+Αντί για την .call(), για να εκτελέσω την withdraw, θα πρέπει να χρησιμοποιήσω
+ένα transaction.
+
+$ amount = web3.utils.toWei("0.1", "ether")
+
+$ web3.eth.getBalance(myAccount)
+$ FaucetContract.methods.withdraw(amount).send({from: myAccount}, function(error,receipt) {console.log(receipt);})
+
+$ web3.eth.getBlockNumber()
+
+$ web3.eth.getBalance(myAccount)
+
+Προσοχή: Για να τρέχει η method στο blockchain χρειάζονται fees. 
+Αν μια μέθοδος δεν κάνει κάτι θα πρέπει να το δηλώσω ρητά ότι δεν κάνει κάτι
+για να μην χρειαστεί να πληρώνω fees.
+
+To .send() εδώ σημαίνει ότι εγώ θέλω να στείλω ένα transaction. 
+Και το transaction αυτό θα το στείλω από τον λογαριασμό μου (myAccount).
+Δεν έχει σημασία ποια είναι η μέθοδος.
+
+Στην γραμμή που τρέξαμε δεν ξέρουμε τι υλοποιεί ακριβώς η withdraw.
+
+Αυτές που αλλάζουν το state καλούνται με την .send()
+ενώ αυτές που δεν αλλάζουν το state καλούνται με το .call()
+
+
+--------------------------------------------
+
+Το μόνο που θα αλλάξει για να τρέξουμε τον παραπάνω κώδικα,
+στο main-net είναι το config του ganache (network, port)
+
+
+Αν δεν έδινα το contract address κι έδινα μόνο το contract ABI
+θα δημιουργηθεί ένα καινούριο contract που είναι έτοιμο να γίνει deploy.
+
+
