@@ -6,14 +6,13 @@ Decentralized Technologies, Blockchain, Bitcoin, Ethereum, Smart contracts
 
 https://bitcoin.org/el/
 
-![Bitcoin](https://github.com/papaemman/decentralized-technologies/blob/main/docs/assets/btc_logo.png=100x20)
+<img src="https://github.com/papaemman/decentralized-technologies/blob/main/docs/assets/btc_logo.png" width="200" height="200" />
 
 ## Ethereum
 
 https://ethereum.org/en/
 
-![Ethereum](https://github.com/papaemman/decentralized-technologies/blob/main/docs/assets/ethereum_logo.png=100x20)
-
+<img src="https://github.com/papaemman/decentralized-technologies/blob/main/docs/assets/ethereum_logo.png" width="200" height="200" />
 
 
 ## Python libraries:
