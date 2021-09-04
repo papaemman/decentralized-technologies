@@ -12,7 +12,7 @@ https://bitcoin.org/el/
 
 https://ethereum.org/en/
 
-<img src="https://github.com/papaemman/decentralized-technologies/blob/main/docs/assets/ethereum_logo.png" width="200" height="200" />
+<img src="https://github.com/papaemman/decentralized-technologies/blob/main/docs/assets/ethereum_logo.png" width="200" height="100" />
 
 
 ## Python libraries:
